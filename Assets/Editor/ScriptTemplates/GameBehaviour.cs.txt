@@ -1,0 +1,32 @@
+using UnityEngine;
+
+public class #SCRIPTNAME# : GameBehaviour
+{
+
+
+
+
+    
+    protected override void Awake()
+    {
+        base.Awake();
+    }
+
+    protected override void Start()
+    {
+        base.Start();    
+    }
+
+    protected override void OnValidate()
+    {
+        base.OnValidate();
+    }
+
+    protected override void Update()
+    {
+        base.Update();
+    }
+
+    public override void _Update() { }
+    
+}
