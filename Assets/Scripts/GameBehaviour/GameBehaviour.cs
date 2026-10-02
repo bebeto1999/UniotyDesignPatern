@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class GameBehaviour : MonoBehaviour 
 {
-
+    
     protected virtual void Awake()
     {
         
