@@ -13,7 +13,10 @@ public class AnalyticsService : MonoBehaviour
     void Awake()
     {
         Instance = this;
-        session = new Session();
+        session = session = new Session
+        {
+            waveAnalytics = new List<WaveAnalytics>()
+        };
     }
 
     public void SaveWaveAnalytics(int currentWave)

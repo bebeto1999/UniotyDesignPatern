@@ -9,7 +9,7 @@ public class WaveCotroller : MonoBehaviour
     [SerializeField] DifficultyScaler difficultyScaler;
     [SerializeField] SaveSystem saveSystem;
     [SerializeField] WaveData waveData;
-    [SerializeField] AudioManager audioManaer;
+    [SerializeField] AudioManager audioManager;
     [SerializeField] RewardSystem rewardSystem;
     ScoreManager scoreManager;
 
@@ -25,19 +25,27 @@ public class WaveCotroller : MonoBehaviour
         }
     }
 
-    public List<GameObject> currentSpownedEnemy;
 
     void Awake()
     {
         scoreManager = new();
+        Debug.Assert(saveSystem != null);
+        Debug.Assert(enemySpawner != null);
+        Debug.Assert(difficultyScaler != null);
     }
 
     void Start() // In the future this will be a StartWave method to call in order to start the wave
     {
         if(saveSystem == null) Debug.LogError("SaveSystem is not set in the WaveController");
-            currentWave = saveSystem.GetWave();
+        
+        currentWave = saveSystem.GetWave();
 
         scoreManager.SetPlayerScoreBasedOnWave(currentWave);
+
+        if(waveData == null) Debug.LogError("WaveData is not set in the WaveController");
+
+        waveData.UpdateCurrentScore(currentWave);
+
         StartNewWave();
     }
 
@@ -51,7 +59,7 @@ public class WaveCotroller : MonoBehaviour
         if(difficultyScaler != null && enemySpawner != null)
         {
             var currentDifficulty = difficultyScaler.GetWaveDifficulty(currentWave);
-            currentSpownedEnemy = enemySpawner.SpownEnemyBasedOnDifficulty(currentDifficulty);
+            enemySpawner.SpownEnemyBasedOnDifficulty(currentDifficulty);
 
             // Update the data 
             if(waveData == null) Debug.LogError("WaveData is not set in the WaveController");
@@ -65,20 +73,9 @@ public class WaveCotroller : MonoBehaviour
             Debug.LogError("difficultyScaler or enemySpowner is not set " );
     }
 
-    public void UpdateWave()
+    public void UpdateWave() // the definition is just a placeholder
     {
-        foreach(var e in currentSpownedEnemy)
-        {
-            if(e == null)
-            {
-                currentSpownedEnemy.Remove(e);
-
-                // Update data 
-                waveData.UpdateCurrentSpownedEnemy(currentSpownedEnemy.Count);
-            }
-        }
-
-        if(currentSpownedEnemy.Count <= 0)
+        if(enemySpawner.AliveEnemyCount() <= 0)
             CompletWave();
     }
 
@@ -90,9 +87,9 @@ public class WaveCotroller : MonoBehaviour
 
         rewardSystem.GiveRandomReward(currentWave);
 
-        if(audioManaer == null) Debug.LogError("AudioManager is not set in WaveController");
+        if(audioManager == null) Debug.LogError("AudioManager is not set in WaveController");
 
-        audioManaer.PlayEndWaveSound();
+        audioManager.PlayEndWaveSound();
 
         currentWave++;
 

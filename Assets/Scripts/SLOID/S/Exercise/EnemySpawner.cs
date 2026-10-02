@@ -7,6 +7,14 @@ public class EnemySpawner : MonoBehaviour
 
     public float spownRange = 10;
     public GameObject enemyPrefab;  // if this wes nnot SRP focused i would have a Factory system;
+    [SerializeField] WaveData waveData;
+
+    public List<GameObject> currentSpownedEnemy;
+
+    void Awake()
+    {
+        Debug.Assert(waveData != null);
+    }
 
 
     /// <summary>
@@ -14,25 +22,29 @@ public class EnemySpawner : MonoBehaviour
     /// </summary>
     /// <param name="difficulty">a float value from wero to infinity</param>
     /// <returns></returns>
-    public List<GameObject> SpownEnemyBasedOnDifficulty(float difficulty) // If there was an enemy 
+    public void SpownEnemyBasedOnDifficulty(float difficulty) // If there was an enemy 
     {
         if(enemyPrefab == null ) Debug.LogError("Enemy prefabe is not set in enemySpowner");
-        
+
         if(difficulty <= 0 )
-            return new List<GameObject>();
+            currentSpownedEnemy = new List<GameObject>();
 
 
         var enemiesToSpown = Mathf.RoundToInt(startEnemyAmount + difficulty);
-        var enemies = new List<GameObject>();
 
         for(int i = 0; i < enemiesToSpown; i++)
         {
             var randomPos = Random.insideUnitSphere * spownRange;
             var enemy = Instantiate(enemyPrefab, randomPos, Quaternion.identity);
-            enemies.Add(enemy);
+            currentSpownedEnemy.Add(enemy);
         }
-        
+    }
 
-        return enemies; 
+
+    public int AliveEnemyCount()
+    {
+        currentSpownedEnemy.RemoveAll(e => e == null);
+        waveData.UpdateCurrentSpownedEnemy(currentSpownedEnemy.Count);
+        return currentSpownedEnemy.Count;
     }
 }
