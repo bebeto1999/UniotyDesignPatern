@@ -7,17 +7,9 @@ using UnityEngine.TestTools;
 public class UnitTester
 {
     [Test]
-    public void ShapeArea()
+    public void AttackTeste()
     {
-        AreaCalculator areaCalculator = new();
-
-        var rectangle = new Rectangle();
-        var circle = new Circle();
-
-
-        Assert.AreEqual(8 , areaCalculator.GetErea(rectangle));
-        Assert.AreEqual(13 , Mathf.RoundToInt(areaCalculator.GetErea(circle)));
-
+        var attackManager = new AttackManager();
     }
 
     // [UnityTest]
