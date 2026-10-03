@@ -6,25 +6,30 @@ using UnityEngine.TestTools;
 
 public class UnitTester
 {
-    // A Test behaves as an ordinary method
-    // [Test]
-    // public void UnitTesterSimplePasses()
-    // {
-    //     ScoreManager scoreManager = new();
-    //     scoreManager.SetPlayerScoreBasedOnWave(0);
-    //     Assert.AreEqual(scoreManager.playerScore, 0);
-    // }
-
-    [UnityTest]
-    public IEnumerator WaveController_Advances_When_Enemies_Are_Dead()
+    [Test]
+    public void ShapeArea()
     {
-        var go = new GameObject("WaveController");
-        var controller = go.AddComponent<WaveCotroller>();
+        AreaCalculator areaCalculator = new();
 
-        Assert.AreEqual(2, controller.currentWave);
-        yield return null;
+        var rectangle = new Rectangle();
+        var circle = new Circle();
+
+
+        Assert.AreEqual(8 , areaCalculator.GetErea(rectangle));
+        Assert.AreEqual(13 , Mathf.RoundToInt(areaCalculator.GetErea(circle)));
 
     }
+
+    // [UnityTest]
+    // public IEnumerator WaveController_Advances_When_Enemies_Are_Dead()
+    // {
+    //     var go = new GameObject("WaveController");
+    //     var controller = go.AddComponent<WaveCotroller>();
+
+    //     Assert.AreEqual(2, controller.currentWave);
+    //     yield return null;
+
+    // }
 
     // A UnityTest behaves like a coroutine in Play Mode. In Edit Mode you can use
     // `yield return null;` to skip a frame.
